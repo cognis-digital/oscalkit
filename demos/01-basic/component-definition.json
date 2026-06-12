@@ -1,0 +1,33 @@
+{
+  "component-definition": {
+    "uuid": "33333333-3333-4333-8333-333333333333",
+    "metadata": {
+      "title": "Cognis Demo Product Component",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2"
+    },
+    "components": [
+      {
+        "uuid": "44444444-4444-4444-8444-444444444444",
+        "type": "software",
+        "title": "cognis-demo-app",
+        "description": "A demo product implementing some controls.",
+        "control-implementations": [
+          {
+            "uuid": "55555555-5555-4555-8555-555555555555",
+            "source": "profile.yaml",
+            "description": "Implements a subset of the low baseline.",
+            "implemented-requirements": [
+              {"uuid": "66666666-6666-4666-8666-666666666666", "control-id": "ac-1",
+               "description": "Policy documented in the product handbook."},
+              {"uuid": "77777777-7777-4777-8777-777777777777", "control-id": "ac-2",
+               "description": "RBAC account lifecycle enforced."},
+              {"uuid": "88888888-8888-4888-8888-888888888888", "control-id": "si-4",
+               "description": "Built-in audit logging and monitoring."}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
