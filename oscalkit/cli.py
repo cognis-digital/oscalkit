@@ -58,10 +58,19 @@ def _build_parser() -> argparse.ArgumentParser:
     cov = sub.add_parser("coverage", help="Diff claimed controls vs a baseline.")
     cov.add_argument("claimed", help="Component-definition or SSP.")
     cov.add_argument("baseline", help="Catalog or profile baseline.")
-    cov.add_argument("--format", choices=("table", "json"), default="table")
+    cov.add_argument("--format", choices=("table", "json", "md"), default="table")
     cov.add_argument("--out", help="Write report to a file.")
     cov.add_argument("--min-coverage", type=float, default=None,
                      help="Exit non-zero if coverage ratio is below this (0..1).")
+
+    st = sub.add_parser("stats", help="Summary stats (controls by family).")
+    st.add_argument("file")
+    st.add_argument("--format", choices=("table", "json"), default="table")
+
+    mg = sub.add_parser("merge", help="Merge baselines/catalogs into one profile.")
+    mg.add_argument("files", nargs="+")
+    mg.add_argument("--to", choices=("json", "yaml"), default="json")
+    mg.add_argument("--out")
 
     sub.add_parser("mcp", help="Run as an MCP server (stdio JSON-RPC).")
     return p
@@ -125,6 +134,9 @@ def _run_coverage(a) -> int:
         return 2
     if a.format == "json":
         _emit(json.dumps(cov, indent=2), a.out)
+    elif a.format == "md":
+        from oscalkit import gap_report_md
+        _emit(gap_report_md(cov), a.out)
     else:
         pct = cov["coverage_ratio"] * 100
         lines = [f"oscalkit coverage — {pct:.1f}% of baseline", "=" * 64,
@@ -138,6 +150,35 @@ def _run_coverage(a) -> int:
         _emit("\n".join(lines), a.out)
     if a.min_coverage is not None and cov["coverage_ratio"] < a.min_coverage:
         return 1
+    return 0
+
+
+def _run_stats(a) -> int:
+    from oscalkit import stats
+    try:
+        s = stats(load(a.file))
+    except (OSError, OscalError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    if a.format == "json":
+        _emit(json.dumps(s, indent=2), None)
+    else:
+        print(f"oscalkit stats — {s['doc_type']}")
+        print("=" * 64)
+        print(f"  controls : {s['control_count']}   families: {s['family_count']}")
+        for fam, n in s["by_family"].items():
+            print(f"    {fam:<6} {n}")
+    return 0
+
+
+def _run_merge(a) -> int:
+    from oscalkit import convert, merge_baselines
+    try:
+        merged = merge_baselines([load(f) for f in a.files])
+    except (OSError, OscalError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    _emit(convert(merged, a.to), a.out)
     return 0
 
 
@@ -158,6 +199,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _run_controls(args)
     if args.command == "coverage":
         return _run_coverage(args)
+    if args.command == "stats":
+        return _run_stats(args)
+    if args.command == "merge":
+        return _run_merge(args)
     if args.command == "mcp":
         return _run_mcp()
     parser.print_help(sys.stderr)

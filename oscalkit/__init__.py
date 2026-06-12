@@ -11,8 +11,11 @@ from oscalkit.core import (
     coverage,
     doc_type,
     explain_gaps,
+    gap_report_md,
     load,
+    merge_baselines,
     parse_yaml_subset,
+    stats,
     to_yaml,
     validate,
 )
@@ -31,8 +34,11 @@ __all__ = [
     "coverage",
     "doc_type",
     "explain_gaps",
+    "gap_report_md",
     "load",
+    "merge_baselines",
     "parse_yaml_subset",
+    "stats",
     "to_yaml",
     "validate",
 ]

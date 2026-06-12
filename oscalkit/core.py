@@ -443,6 +443,68 @@ def coverage(claimed_doc: Dict[str, Any],
     }
 
 
+def gap_report_md(coverage_result: Dict[str, Any],
+                  title: str = "Control Coverage Report") -> str:
+    """Render a coverage result as a Markdown gap report (for PRs / audits)."""
+    pct = coverage_result["coverage_ratio"] * 100
+    lines = [f"# {title}", "",
+             f"**Coverage: {pct:.1f}%** "
+             f"({len(coverage_result['covered'])}/"
+             f"{coverage_result['baseline_count']} baseline controls)", ""]
+    lines.append("## Missing controls")
+    if coverage_result["missing"]:
+        lines.append("")
+        lines.append("| Control | Status |")
+        lines.append("|---------|--------|")
+        for cid in coverage_result["missing"]:
+            lines.append(f"| `{cid}` | not implemented |")
+    else:
+        lines.append("\nNone — every baseline control is covered.")
+    if coverage_result["extra"]:
+        lines.append("")
+        lines.append("## Extra controls (claimed, not in baseline)")
+        lines.append("")
+        for cid in coverage_result["extra"]:
+            lines.append(f"- `{cid}`")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def stats(doc: Dict[str, Any]) -> Dict[str, Any]:
+    """Summary statistics for an OSCAL document (counts by family + totals)."""
+    ids = control_ids(doc)
+    families: Dict[str, int] = {}
+    for cid in ids:
+        fam = cid.split("-")[0]
+        families[fam] = families.get(fam, 0) + 1
+    return {
+        "doc_type": doc_type(doc),
+        "control_count": len(ids),
+        "family_count": len(families),
+        "by_family": dict(sorted(families.items())),
+    }
+
+
+def merge_baselines(docs: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Merge the control-id sets of several baselines/catalogs into a profile.
+
+    Produces a profile-shaped document selecting the union of all control ids.
+    """
+    all_ids: set = set()
+    for d in docs:
+        all_ids.update(control_ids(d))
+    selected = sorted(all_ids, key=_control_sort_key)
+    return {
+        "profile": {
+            "uuid": "00000000-0000-4000-8000-000000000000",
+            "metadata": {"title": "Merged Baseline",
+                         "version": "1.0.0", "oscal-version": "1.1.2"},
+            "imports": [{"href": "merged", "include-controls": [
+                {"with-ids": selected}]}],
+        }
+    }
+
+
 # --------------------------------------------------------------------------- #
 # convert
 # --------------------------------------------------------------------------- #
