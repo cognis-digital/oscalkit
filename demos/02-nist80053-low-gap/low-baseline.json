@@ -1,0 +1,26 @@
+{
+  "profile": {
+    "uuid": "a1b2c3d4-0002-4000-8000-000000000002",
+    "metadata": {
+      "title": "NIST SP 800-53 Rev 5 LOW Baseline (subset)",
+      "version": "5.1.1",
+      "oscal-version": "1.1.2"
+    },
+    "imports": [
+      {
+        "href": "catalog.json",
+        "include-controls": [
+          {
+            "with-ids": [
+              "ac-1", "ac-2", "ac-3", "ac-7", "ac-8",
+              "au-2", "au-3", "au-6",
+              "ia-2", "ia-5",
+              "si-2", "si-4",
+              "ra-5"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

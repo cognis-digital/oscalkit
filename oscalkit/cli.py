@@ -41,7 +41,8 @@ def _build_parser() -> argparse.ArgumentParser:
 
     v = sub.add_parser("validate", help="Structural + referential checks.")
     v.add_argument("file", help="OSCAL JSON/YAML document.")
-    v.add_argument("--format", choices=("table", "json"), default="table")
+    v.add_argument("--format", choices=("table", "json", "sarif"),
+                   default="table")
     v.add_argument("--out", help="Write report to a file.")
     v.add_argument("--fail-on", choices=("error", "warning", "info"),
                    default="error", help="Exit non-zero at/above this severity.")
@@ -85,6 +86,9 @@ def _run_validate(a) -> int:
     res = validate(doc, source=a.file)
     if a.format == "json":
         _emit(json.dumps(res.to_dict(), indent=2), a.out)
+    elif a.format == "sarif":
+        from oscalkit import to_sarif
+        _emit(json.dumps(to_sarif(res), indent=2), a.out)
     else:
         lines = [f"oscalkit validate — {res.source}  ({res.doc_type})", "=" * 64]
         if not res.findings:

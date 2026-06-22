@@ -1,0 +1,45 @@
+{
+  "catalog": {
+    "uuid": "e5f6a7b8-0001-4000-8000-000000000001",
+    "metadata": {
+      "title": "Org Control Portfolio (subset)",
+      "version": "2026.2",
+      "oscal-version": "1.1.2"
+    },
+    "groups": [
+      {
+        "id": "ac", "title": "Access Control",
+        "controls": [
+          {"id": "ac-1", "title": "Policy and Procedures"},
+          {"id": "ac-2", "title": "Account Management"},
+          {"id": "ac-2.1", "title": "Automated System Account Management"},
+          {"id": "ac-3", "title": "Access Enforcement"},
+          {"id": "ac-6", "title": "Least Privilege"}
+        ]
+      },
+      {
+        "id": "au", "title": "Audit and Accountability",
+        "controls": [
+          {"id": "au-2", "title": "Event Logging"},
+          {"id": "au-6", "title": "Audit Record Review, Analysis, and Reporting"}
+        ]
+      },
+      {
+        "id": "sc", "title": "System and Communications Protection",
+        "controls": [
+          {"id": "sc-7", "title": "Boundary Protection"},
+          {"id": "sc-8", "title": "Transmission Confidentiality and Integrity"},
+          {"id": "sc-13", "title": "Cryptographic Protection"},
+          {"id": "sc-28", "title": "Protection of Information at Rest"}
+        ]
+      },
+      {
+        "id": "si", "title": "System and Information Integrity",
+        "controls": [
+          {"id": "si-2", "title": "Flaw Remediation"},
+          {"id": "si-4", "title": "System Monitoring"}
+        ]
+      }
+    ]
+  }
+}

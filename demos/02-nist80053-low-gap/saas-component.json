@@ -1,0 +1,47 @@
+{
+  "component-definition": {
+    "uuid": "a1b2c3d4-0003-4000-8000-000000000003",
+    "metadata": {
+      "title": "Acme Notes SaaS — Component Definition",
+      "version": "2026.6.0",
+      "oscal-version": "1.1.2"
+    },
+    "components": [
+      {
+        "uuid": "a1b2c3d4-0004-4000-8000-000000000004",
+        "type": "service",
+        "title": "Acme Notes API",
+        "description": "Multi-tenant note-taking SaaS, control claims as of the latest release.",
+        "control-implementations": [
+          {
+            "uuid": "a1b2c3d4-0005-4000-8000-000000000005",
+            "source": "low-baseline.json",
+            "description": "Controls implemented against the 800-53 LOW baseline.",
+            "implemented-requirements": [
+              {"uuid": "a1b2c3d4-1001-4000-8000-000000001001", "control-id": "ac-1",
+               "description": "Access control policy published in the trust center."},
+              {"uuid": "a1b2c3d4-1002-4000-8000-000000001002", "control-id": "ac-2",
+               "description": "SCIM-driven account lifecycle with deprovisioning on offboard."},
+              {"uuid": "a1b2c3d4-1003-4000-8000-000000001003", "control-id": "ac-3",
+               "description": "Tenant-scoped RBAC enforced at the API gateway."},
+              {"uuid": "a1b2c3d4-1004-4000-8000-000000001004", "control-id": "ac-7",
+               "description": "Lockout after 5 failed logins."},
+              {"uuid": "a1b2c3d4-1005-4000-8000-000000001005", "control-id": "au-2",
+               "description": "Structured audit events emitted to the log pipeline."},
+              {"uuid": "a1b2c3d4-1006-4000-8000-000000001006", "control-id": "au-3",
+               "description": "Audit records include actor, action, resource, timestamp."},
+              {"uuid": "a1b2c3d4-1007-4000-8000-000000001007", "control-id": "ia-2",
+               "description": "OIDC SSO for organizational users."},
+              {"uuid": "a1b2c3d4-1008-4000-8000-000000001008", "control-id": "ia-5",
+               "description": "Password + TOTP authenticator management."},
+              {"uuid": "a1b2c3d4-1009-4000-8000-000000001009", "control-id": "si-2",
+               "description": "Monthly patch cycle with emergency hotfix path."},
+              {"uuid": "a1b2c3d4-1010-4000-8000-000000001010", "control-id": "si-4",
+               "description": "Runtime monitoring and alerting on anomalies."}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

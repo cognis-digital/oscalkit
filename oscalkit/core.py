@@ -470,6 +470,69 @@ def gap_report_md(coverage_result: Dict[str, Any],
     return "\n".join(lines)
 
 
+def to_sarif(result: "ValidationResult") -> Dict[str, Any]:
+    """Render a ValidationResult as a SARIF 2.1.0 log.
+
+    SARIF (Static Analysis Results Interchange Format, OASIS standard) is what
+    GitHub code scanning, Azure DevOps, and most CI dashboards ingest. Emitting
+    oscalkit's structural findings as SARIF lets OSCAL linting show up next to
+    SAST/dependency findings in the same security tab — defensive, authorized
+    compliance gating in CI.
+
+    Severities map to SARIF levels: error->error, warning->warning, info->note.
+    """
+    sarif_level = {"error": "error", "warning": "warning", "info": "note"}
+
+    # Build the rules catalog (one rule per distinct finding `rule`).
+    rule_index: Dict[str, int] = {}
+    rules: List[Dict[str, Any]] = []
+    for f in result.findings:
+        if f.rule not in rule_index:
+            rule_index[f.rule] = len(rules)
+            rules.append({
+                "id": f.rule,
+                "name": f.rule.replace(".", "_"),
+                "shortDescription": {"text": f.rule},
+                "defaultConfiguration": {
+                    "level": sarif_level.get(f.severity, "warning")},
+            })
+
+    results: List[Dict[str, Any]] = []
+    for f in result.findings:
+        results.append({
+            "ruleId": f.rule,
+            "ruleIndex": rule_index[f.rule],
+            "level": sarif_level.get(f.severity, "warning"),
+            "message": {"text": f.message},
+            "locations": [{
+                "physicalLocation": {
+                    "artifactLocation": {"uri": result.source},
+                },
+                "logicalLocations": [{"fullyQualifiedName": f.location}],
+            }] if f.location else [{
+                "physicalLocation": {
+                    "artifactLocation": {"uri": result.source}}}],
+        })
+
+    return {
+        "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/"
+                   "master/Schemata/sarif-schema-2.1.0.json",
+        "version": "2.1.0",
+        "runs": [{
+            "tool": {
+                "driver": {
+                    "name": TOOL_NAME,
+                    "version": TOOL_VERSION,
+                    "informationUri": "https://github.com/cognis-digital/oscalkit",
+                    "rules": rules,
+                }
+            },
+            "properties": {"docType": result.doc_type},
+            "results": results,
+        }],
+    }
+
+
 def stats(doc: Dict[str, Any]) -> Dict[str, Any]:
     """Summary statistics for an OSCAL document (counts by family + totals)."""
     ids = control_ids(doc)

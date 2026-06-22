@@ -1,0 +1,33 @@
+{
+  "component-definition": {
+    "uuid": "c3d4e5f6-0001-4000-8000-000000000001",
+    "metadata": {
+      "title": "Payments Gateway — Component Definition",
+      "version": "3.4.0",
+      "oscal-version": "1.1.2"
+    },
+    "components": [
+      {
+        "uuid": "c3d4e5f6-0002-4000-8000-000000000002",
+        "type": "service",
+        "title": "Payments Gateway",
+        "description": "PCI-relevant payment processing service.",
+        "control-implementations": [
+          {
+            "uuid": "c3d4e5f6-0003-4000-8000-000000000003",
+            "source": "baseline.json",
+            "description": "Controls implemented by the gateway.",
+            "implemented-requirements": [
+              {"uuid": "c3d4e5f6-1001-4000-8000-000000001001", "control-id": "sc-8",
+               "description": "TLS 1.2+ enforced for all cardholder data in transit."},
+              {"uuid": "c3d4e5f6-1002-4000-8000-000000001002", "control-id": "sc-13",
+               "description": "FIPS-validated cryptography for stored card tokens."},
+              {"uuid": "c3d4e5f6-1003-4000-8000-000000001003", "control-id": "au-2",
+               "description": "Tamper-evident audit logging of all transactions."}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

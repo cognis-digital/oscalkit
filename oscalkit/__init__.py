@@ -16,6 +16,7 @@ from oscalkit.core import (
     merge_baselines,
     parse_yaml_subset,
     stats,
+    to_sarif,
     to_yaml,
     validate,
 )
@@ -39,6 +40,7 @@ __all__ = [
     "merge_baselines",
     "parse_yaml_subset",
     "stats",
+    "to_sarif",
     "to_yaml",
     "validate",
 ]

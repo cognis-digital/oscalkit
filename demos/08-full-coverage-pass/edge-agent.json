@@ -1,0 +1,37 @@
+{
+  "component-definition": {
+    "uuid": "f6a7b8c9-0002-4000-8000-000000000002",
+    "metadata": {
+      "title": "Edge Agent — Component Definition",
+      "version": "1.7.2",
+      "oscal-version": "1.1.2"
+    },
+    "components": [
+      {
+        "uuid": "f6a7b8c9-0003-4000-8000-000000000003",
+        "type": "software",
+        "title": "Edge Telemetry Agent",
+        "description": "Hardened on-device agent; fully implements its baseline.",
+        "control-implementations": [
+          {
+            "uuid": "f6a7b8c9-0004-4000-8000-000000000004",
+            "source": "baseline.yaml",
+            "description": "Full implementation of the hardening baseline.",
+            "implemented-requirements": [
+              {"uuid": "f6a7b8c9-1001-4000-8000-000000001001", "control-id": "ac-3",
+               "description": "Capability-scoped access enforced on every IPC call."},
+              {"uuid": "f6a7b8c9-1002-4000-8000-000000001002", "control-id": "au-2",
+               "description": "Append-only local audit log shipped to the collector."},
+              {"uuid": "f6a7b8c9-1003-4000-8000-000000001003", "control-id": "sc-8",
+               "description": "mTLS to the collector; certificate pinning."},
+              {"uuid": "f6a7b8c9-1004-4000-8000-000000001004", "control-id": "sc-28",
+               "description": "Local spool encrypted at rest with a TPM-sealed key."},
+              {"uuid": "f6a7b8c9-1005-4000-8000-000000001005", "control-id": "si-4",
+               "description": "Self-integrity check and tamper alerting on boot."}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

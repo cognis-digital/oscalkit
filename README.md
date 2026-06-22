@@ -21,6 +21,7 @@ coverage in CI — no heavyweight toolchain, no pip installs.
 # Structural + referential validation (required fields, ids, duplicates).
 python -m oscalkit validate ssp.json
 python -m oscalkit validate ssp.json --fail-on warning   # stricter gate
+python -m oscalkit validate catalog.json --format sarif  # SARIF 2.1.0 for code scanning
 
 # Convert between the two formats OSCAL ships in.
 python -m oscalkit convert catalog.json --to yaml
@@ -36,6 +37,23 @@ python -m oscalkit coverage component-definition.json profile.yaml --min-coverag
 python -m oscalkit mcp
 ```
 
+## Demos
+
+Each `demos/<NN-name>/` folder holds real-shaped OSCAL inputs plus a
+`SCENARIO.md` with the situation, the exact command, what to expect, and how to
+act. Every demo is exercised by the test suite, so the outputs below are real.
+
+| Demo | Scenario |
+|------|----------|
+| [01-basic](demos/01-basic/) | Validate + 75% coverage walk-through |
+| [02-nist80053-low-gap](demos/02-nist80053-low-gap/) | 800-53 LOW baseline gap audit for a SaaS (76.9%) |
+| [03-ci-coverage-gate](demos/03-ci-coverage-gate/) | Fail a CI build when coverage drops below a ratio |
+| [04-sarif-code-scanning](demos/04-sarif-code-scanning/) | Surface findings in GitHub code scanning via SARIF 2.1.0 |
+| [05-json-yaml-roundtrip](demos/05-json-yaml-roundtrip/) | Lossless JSON ⇄ YAML conversion |
+| [06-merge-baselines](demos/06-merge-baselines/) | Merge LOW + MODERATE into one profile |
+| [07-portfolio-stats](demos/07-portfolio-stats/) | Profile a catalog by control family |
+| [08-full-coverage-pass](demos/08-full-coverage-pass/) | A clean component passing a strict 100% gate |
+
 ## Document classes understood
 
 | Type                  | Validated for                                   |
@@ -49,6 +67,9 @@ python -m oscalkit mcp
 
 - **Coverage diffing built in.** Not just a linter — it answers "what controls
   am I missing against this baseline?" and gates CI on a coverage ratio.
+- **SARIF 2.1.0 output.** `validate --format sarif` emits the OASIS format
+  GitHub code scanning / Azure DevOps ingest, so OSCAL findings land in the same
+  Security tab as your SAST results (see [demo 04](demos/04-sarif-code-scanning/)).
 - **Round-trippable JSON ⇄ YAML.** Teams mix both; oscalkit converts losslessly
   for the document shapes it handles.
 - **MCP-native** (`validate` / `controls` / `coverage`) and an opt-in local-fleet

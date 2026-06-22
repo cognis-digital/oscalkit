@@ -1,0 +1,21 @@
+# Internal MODERATE baseline: adds controls on top of LOW.
+profile:
+  uuid: d4e5f6a7-0002-4000-8000-000000000002
+  metadata:
+    title: Internal MODERATE Baseline (subset)
+    version: 1.0.0
+    oscal-version: 1.1.2
+  imports:
+    - href: catalog.json
+      include-controls:
+        - with-ids:
+            - ac-2
+            - ac-6
+            - au-2
+            - au-6
+            - cm-6
+            - cp-9
+            - ia-2
+            - ir-4
+            - sc-7
+            - si-4

@@ -1,0 +1,40 @@
+{
+  "system-security-plan": {
+    "uuid": "b2c3d4e5-0002-4000-8000-000000000002",
+    "metadata": {
+      "title": "Project Falcon System Security Plan",
+      "version": "0.9.0",
+      "oscal-version": "1.1.2"
+    },
+    "import-profile": {"href": "moderate-baseline.yaml"},
+    "control-implementation": {
+      "description": "How Project Falcon satisfies the MODERATE baseline.",
+      "implemented-requirements": [
+        {"uuid": "b2c3d4e5-1001-4000-8000-000000001001", "control-id": "ac-2",
+         "description": "Centralized IdP with quarterly access reviews."},
+        {"uuid": "b2c3d4e5-1002-4000-8000-000000001002", "control-id": "ac-3",
+         "description": "Policy-as-code authorization at the mesh."},
+        {"uuid": "b2c3d4e5-1003-4000-8000-000000001003", "control-id": "ac-6",
+         "description": "Least-privilege IAM roles, no standing admin."},
+        {"uuid": "b2c3d4e5-1004-4000-8000-000000001004", "control-id": "au-2",
+         "description": "Event logging across all services."},
+        {"uuid": "b2c3d4e5-1005-4000-8000-000000001005", "control-id": "au-6",
+         "description": "Weekly audit review by the SOC."},
+        {"uuid": "b2c3d4e5-1006-4000-8000-000000001006", "control-id": "cm-2",
+         "description": "Baseline configurations stored as IaC in version control."},
+        {"uuid": "b2c3d4e5-1007-4000-8000-000000001007", "control-id": "cm-6",
+         "description": "CIS-benchmarked configuration settings enforced."},
+        {"uuid": "b2c3d4e5-1008-4000-8000-000000001008", "control-id": "ia-2",
+         "description": "MFA for all organizational users."},
+        {"uuid": "b2c3d4e5-1009-4000-8000-000000001009", "control-id": "ia-5",
+         "description": "Authenticator management via the IdP."},
+        {"uuid": "b2c3d4e5-1010-4000-8000-000000001010", "control-id": "sc-7",
+         "description": "Segmented VPC with managed boundary protection."},
+        {"uuid": "b2c3d4e5-1011-4000-8000-000000001011", "control-id": "sc-8",
+         "description": "TLS 1.2+ in transit, mTLS service-to-service."},
+        {"uuid": "b2c3d4e5-1012-4000-8000-000000001012", "control-id": "si-4",
+         "description": "Runtime threat detection and alerting."}
+      ]
+    }
+  }
+}

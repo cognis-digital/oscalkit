@@ -1,0 +1,27 @@
+# A trimmed MODERATE-style baseline used to gate a CI pipeline.
+# Control ids and titles follow the public NIST SP 800-53 Rev 5 catalog.
+profile:
+  uuid: b2c3d4e5-0001-4000-8000-000000000001
+  metadata:
+    title: Project Falcon MODERATE Baseline (subset)
+    version: 1.2.0
+    oscal-version: 1.1.2
+  imports:
+    - href: catalog.json
+      include-controls:
+        - with-ids:
+            - ac-2
+            - ac-3
+            - ac-6
+            - au-2
+            - au-6
+            - cm-2
+            - cm-6
+            - cp-9
+            - ia-2
+            - ia-5
+            - ir-4
+            - sc-7
+            - sc-8
+            - si-2
+            - si-4
