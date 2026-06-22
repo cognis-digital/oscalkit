@@ -444,8 +444,14 @@ def coverage(claimed_doc: Dict[str, Any],
 
 
 def gap_report_md(coverage_result: Dict[str, Any],
-                  title: str = "Control Coverage Report") -> str:
-    """Render a coverage result as a Markdown gap report (for PRs / audits)."""
+                  title: str = "Control Coverage Report",
+                  titles: Dict[str, str] = None) -> str:
+    """Render a coverage result as a Markdown gap report (for PRs / audits).
+
+    If ``titles`` (a ``{control_id: nist_title}`` map, e.g. resolved from the
+    NIST 800-53 rev5 OSCAL feed) is supplied, missing controls are annotated
+    with their official titles.
+    """
     pct = coverage_result["coverage_ratio"] * 100
     lines = [f"# {title}", "",
              f"**Coverage: {pct:.1f}%** "
@@ -454,10 +460,16 @@ def gap_report_md(coverage_result: Dict[str, Any],
     lines.append("## Missing controls")
     if coverage_result["missing"]:
         lines.append("")
-        lines.append("| Control | Status |")
-        lines.append("|---------|--------|")
-        for cid in coverage_result["missing"]:
-            lines.append(f"| `{cid}` | not implemented |")
+        if titles:
+            lines.append("| Control | Title | Status |")
+            lines.append("|---------|-------|--------|")
+            for cid in coverage_result["missing"]:
+                lines.append(f"| `{cid}` | {titles.get(cid, '')} | not implemented |")
+        else:
+            lines.append("| Control | Status |")
+            lines.append("|---------|--------|")
+            for cid in coverage_result["missing"]:
+                lines.append(f"| `{cid}` | not implemented |")
     else:
         lines.append("\nNone — every baseline control is covered.")
     if coverage_result["extra"]:

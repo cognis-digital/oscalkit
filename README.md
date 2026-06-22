@@ -29,13 +29,45 @@ python -m oscalkit convert profile.yaml --to json
 
 # Flatten a document to the control ids it covers.
 python -m oscalkit controls catalog.json
+python -m oscalkit controls catalog.json --enrich            # resolve real NIST titles
 
 # Diff claimed controls against a baseline; gate on a minimum ratio.
 python -m oscalkit coverage component-definition.json profile.yaml --min-coverage 0.8
+python -m oscalkit coverage component-definition.json profile.yaml --enrich --format md
+
+# Data feeds — ingest the real NIST 800-53 rev5 catalog (edge / air-gap).
+python -m oscalkit feeds list
+python -m oscalkit feeds update oscal-800-53-rev5-catalog    # fetch + cache once
+python -m oscalkit feeds get --offline                       # re-serve from cache
+python -m oscalkit feeds snapshot-export feeds.tar.gz        # sneakernet to an enclave
 
 # Run as a local MCP server (stdio JSON-RPC).
 python -m oscalkit mcp
 ```
+
+## Data feeds (edge / air-gap deployable)
+
+oscalkit consumes one **real, authoritative, keyless** public feed and uses it
+to turn bare control ids into auditor-readable output:
+
+| Feed id | Source | Used for |
+|---------|--------|----------|
+| `oscal-800-53-rev5-catalog` | NIST, native OSCAL JSON — <https://github.com/usnistgov/oscal-content> (`nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json`) | Resolve control ids → official **titles** + family on `controls --enrich` and `coverage --enrich` |
+
+The bundled ingestion engine (`oscalkit/datafeeds.py`, standard-library only)
+fetches over HTTPS, caches to disk, and **re-serves offline** so the tool keeps
+working on disconnected / edge / air-gapped gear:
+
+- `--offline` on any feed read serves the cache and never touches the network.
+- The cache location is `COGNIS_FEEDS_CACHE` (default `~/.cache/cognis-feeds`).
+- **Snapshot workflow:** on a connected host run `feeds update` then
+  `feeds snapshot-export feeds.tar.gz`; carry the tarball to the air-gapped
+  host and run `feeds snapshot-import feeds.tar.gz`. Enrichment then works with
+  zero network.
+
+The catalog file (`oscalkit/data_feeds_2026.json`) lists all 17 feeds in the
+Cognis catalog; oscalkit filters it to the compliance feed it actually uses, so
+`feeds list` shows only the relevant entry. Defensive / authorized-use only.
 
 ## Demos
 
@@ -53,6 +85,7 @@ act. Every demo is exercised by the test suite, so the outputs below are real.
 | [06-merge-baselines](demos/06-merge-baselines/) | Merge LOW + MODERATE into one profile |
 | [07-portfolio-stats](demos/07-portfolio-stats/) | Profile a catalog by control family |
 | [08-full-coverage-pass](demos/08-full-coverage-pass/) | A clean component passing a strict 100% gate |
+| [09-feeds-enrichment](demos/09-feeds-enrichment/) | Enrich control ids with real NIST 800-53 rev5 titles, offline / air-gapped |
 
 ## Document classes understood
 
