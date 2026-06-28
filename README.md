@@ -8,6 +8,76 @@ Part of the **Cognis Neural Suite**.
 
 ---
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ oscalkit-emit --version
+oscalkit 0.1.0
+```
+
+```console
+$ oscalkit-emit --help
+usage: oscalkit [-h] [--version]
+                {validate,convert,controls,coverage,stats,merge,mcp,feeds} ...
+
+OSCAL compliance-as-code — validate, convert, and diff control coverage for
+catalogs, profiles, component definitions, and SSPs.
+
+positional arguments:
+  {validate,convert,controls,coverage,stats,merge,mcp,feeds}
+    validate            Structural + referential checks.
+    convert             Convert OSCAL between JSON and YAML.
+    controls            List the control ids a document covers.
+    coverage            Diff claimed controls vs a baseline.
+    stats               Summary stats (controls by family).
+    merge               Merge baselines/catalogs into one profile.
+    mcp                 Run as an MCP server (stdio JSON-RPC).
+    feeds               Real NIST 800-53 control-catalog feed (edge/air-gap
+                        deployable).
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+```
+
+> Blocks above are real `oscalkit` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"feed": {
+"type": "STIX",
+"id": "https://example.com/feed/12345",
+"spec_version": "2.1"
+},
+"objects": [
+{
+"id": "https://example.com/object/54321",
+"type": "indicator",
+"name": "Suspicious DNS Query",
+"description": "DNS query for suspicious domain",
+"created_by_ref": "https://example.com/user/john.doe",
+"modified": "2023-02-15T14:30:00Z"
+},
+{
+"id": "https://example.com/object/67890",
+"type": "observables",
+"name": "Network Traffic",
+"description": "Unusual network traffic detected",
+"created_by_ref": "https://example.com/user/jane.doe",
+"modified": "2023-02-15T14:30:00Z"
+}
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Why now
 
 OSCAL is the machine-readable format the U.S. government is standardizing on for

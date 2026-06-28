@@ -1,0 +1,3 @@
+$ oscalkit-emit --version
+
+oscalkit 0.1.0

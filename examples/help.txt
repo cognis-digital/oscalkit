@@ -1,0 +1,23 @@
+$ oscalkit-emit --help
+
+usage: oscalkit [-h] [--version]
+                {validate,convert,controls,coverage,stats,merge,mcp,feeds} ...
+
+OSCAL compliance-as-code — validate, convert, and diff control coverage for
+catalogs, profiles, component definitions, and SSPs.
+
+positional arguments:
+  {validate,convert,controls,coverage,stats,merge,mcp,feeds}
+    validate            Structural + referential checks.
+    convert             Convert OSCAL between JSON and YAML.
+    controls            List the control ids a document covers.
+    coverage            Diff claimed controls vs a baseline.
+    stats               Summary stats (controls by family).
+    merge               Merge baselines/catalogs into one profile.
+    mcp                 Run as an MCP server (stdio JSON-RPC).
+    feeds               Real NIST 800-53 control-catalog feed (edge/air-gap
+                        deployable).
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
